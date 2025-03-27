@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthStack from './navigation/AuthStack';
-import MainStack from './navigation/MainStack';
 import { supabase } from './lib/supabaseClient';
 import { Session } from '@supabase/supabase-js';
 
@@ -34,7 +33,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      {session ? <MainStack /> : <AuthStack />}
+      <AuthStack />
     </NavigationContainer>
   );
 }

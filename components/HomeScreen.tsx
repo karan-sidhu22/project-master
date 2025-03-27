@@ -4,7 +4,18 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-nati
 import {useNavigation} from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+type AuthStackParamList = {
+    SignIn: undefined;
+    SignUp: undefined;
+    Home: undefined;
+    Account: undefined;
+};
+
+type SignInScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Home'>;
+
+
 export default function HomeScreen() {
+    const navigation = useNavigation<SignInScreenNavigationProp>();
     return (
         <ScrollView style={styles.container}>
             {/* Employee Income Section */}
@@ -34,7 +45,9 @@ export default function HomeScreen() {
                 <NavigationItem title="Home" />
                 <NavigationItem title="Income" />
                 <NavigationItem title="Graphs" />
-                <NavigationItem title="Account" />
+                <TouchableOpacity style={styles.navigationItem} onPress={() => navigation.navigate('Account')}>
+                    <Text style={styles.navigationText}>Account</Text>
+                </TouchableOpacity>
             </View>
         </ScrollView>
     );
@@ -111,7 +124,7 @@ const styles = StyleSheet.create({
     },
     navigationItem: {
         backgroundColor: '#fff',
-        padding: 15,
+        padding: 10,
         borderRadius: 8,
         width: '23%',
         alignItems: 'center',

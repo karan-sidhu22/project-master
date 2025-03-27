@@ -9,6 +9,8 @@ import { Ionicons } from '@expo/vector-icons'; // Import an icon library
 type AuthStackParamList = {
     SignIn: undefined;
     SignUp: undefined;
+    Home: undefined;
+    Account: undefined;
 };
 
 // Define the navigation prop type for the SignUpScreen
@@ -55,9 +57,9 @@ export default function SignUpScreen() {
     return (
         <View style={styles.container}>
             {/* Custom Back Button */}
-            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+            {/* <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
                 <Ionicons name="arrow-back" size={24} color="#007bff" />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <Text style={styles.title}>Sign up</Text>
             <Text style={styles.subtitle}>Already Have an Account? <Text style={styles.linkText} onPress={() => navigation.navigate('SignIn')}>Sign In</Text></Text>
@@ -103,9 +105,9 @@ export default function SignUpScreen() {
             <TouchableOpacity style={styles.button} onPress={handleSignUp}>
                 <Text style={styles.buttonText}>Sign up</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.navigate('SignIn')}>
+            {/* <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.navigate('SignIn')}>
                 <Text style={styles.linkText}>Go Back</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
         </View>
     );
 }

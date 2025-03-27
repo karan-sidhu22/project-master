@@ -9,6 +9,7 @@ type AuthStackParamList = {
     SignIn: undefined;
     SignUp: undefined;
     Home: undefined;
+    Account: undefined;
 };
 
 // Define the navigation prop type for the SignInScreen
@@ -17,19 +18,19 @@ type SignInScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'SignI
 export default function SignInScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false); // Loading state for the Sign In button
+    //const [loading, setLoading] = useState(false); // Loading state for the Sign In button
     const navigation = useNavigation<SignInScreenNavigationProp>();
 
     const handleSignIn = async () => {
-        setLoading(true); // Start loading
+        //setLoading(true); // Start loading
 
         // Validate inputs
         if (!email || !password) {
             Alert.alert('Error', 'Please fill in all fields');
-            setLoading(false);
+            //setLoading(false);
             return;
         }
-        navigation.navigate('Home');
+        
 
         // Sign in with Supabase
         const { data, error } = await supabase.auth.signInWithPassword({
@@ -37,14 +38,52 @@ export default function SignInScreen() {
             password,
         });
 
-        if (error) {
-            Alert.alert('Error', error.message); // Show error message
-        } else {
-            Alert.alert('Success', 'Signed in successfully!');
-            navigation.navigate('Home'); // Navigate to the Home screen
+        // if (error) {
+        //     Alert.alert('Error', error.message); // Show error message
+        // } 
+        const user = data.user;
+        if (!user) {
+            Alert.alert('Error', 'Sign-in failed.');
+            return;
+        }
+        const { data: existingUser, error: fetchError } = await supabase
+            .from('users')
+            .select('*')
+            .eq('email', email.toLocaleLowerCase()) 
+            .single();
+
+        if (fetchError && fetchError.code !== 'PGRST116') { // PGRST116 means no data found
+            Alert.alert('Error', fetchError.message);
+            return;
         }
 
-        setLoading(false); // Stop loading
+        // If user does NOT exist in 'users' table, insert details
+        if (!existingUser) {
+            const { error: insertError } = await supabase
+                .from('users')
+                .insert([
+                    {
+                        uuid: user.id, // Supabase Auth User ID
+                        email: user.email,
+                        firstname: "", // Placeholder (Update later)
+                        lastname: "",
+                        password: password, // Storing plain text password (not recommended)
+                    },
+                ]);
+
+            if (insertError) {
+                Alert.alert('Error', insertError.message);
+                return;
+            }
+        }
+
+        Alert.alert('Success', `Welcome, ${user.email}!`);
+        setEmail('');
+        setPassword('');
+        //setLoading(false);
+        navigation.navigate('Home');
+
+         // Stop loading
     };
 
     return (
@@ -68,10 +107,10 @@ export default function SignInScreen() {
             <TouchableOpacity
                 style={styles.button}
                 onPress={handleSignIn}
-                disabled={loading} // Disable button when loading
+                //disabled={loading} // Disable button when loading
             >
                 <Text style={styles.buttonText}>
-                    {loading ? 'Signing In...' : 'SIGN IN'}
+                    {'SIGN IN'}
                 </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>

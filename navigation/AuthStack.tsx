@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SignInScreen from '../components/SignInScreen';
 import SignUpScreen from '../components/SignUpScreen';
 import HomeScreen from '../components/HomeScreen';
+import AccountScreen from '../components/AccountScreen';
 
 const Stack = createStackNavigator();
 
@@ -13,17 +14,22 @@ export default function AuthStack() {
             <Stack.Screen
                 name="SignIn"
                 component={SignInScreen}
-                options={{ headerShown: false }}
+                options={{ title: 'SignIn', headerLeft: ()=> null }}
             />
             <Stack.Screen
                 name="SignUp"
                 component={SignUpScreen}
-                options={{ headerShown: false }}
+                options={{ title: 'SignUp', headerLeft: ()=> null }}
             />
             <Stack.Screen
                 name="Home"
                 component={HomeScreen}
-                options={{ headerShown: false }}
+                options={{ title: 'Expense', headerShown:true,headerLeft: ()=> null }}
+            />
+            <Stack.Screen
+                name="Account"
+                component={AccountScreen}
+                options={{ title: 'Account', headerShown:true ,headerLeft: ()=> null }}
             />
 
         </Stack.Navigator>
