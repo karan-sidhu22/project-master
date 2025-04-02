@@ -8,8 +8,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 type AuthStackParamList = {
     SignIn: undefined;
     SignUp: undefined;
-    Home: undefined;
-    Account: undefined;
+    MainApp: undefined; // Add this line to define the MainApp screen
 };
 
 // Define the navigation prop type for the SignInScreen
@@ -81,7 +80,7 @@ export default function SignInScreen() {
         setEmail('');
         setPassword('');
         //setLoading(false);
-        navigation.navigate('Home');
+        navigation.navigate('MainApp');;
 
          // Stop loading
     };
