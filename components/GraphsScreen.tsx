@@ -233,6 +233,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 16,
+    marginTop: 16,
     color: '#2c3e50',
     textAlign: 'center',
   },

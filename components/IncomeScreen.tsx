@@ -165,6 +165,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    marginTop: 15,
     color: '#2c3e50',
   },
   listContainer: {

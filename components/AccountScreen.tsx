@@ -136,6 +136,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
     marginBottom: 10,
+    marginTop: 15,
   },
   userName: {
     fontSize: 22,
