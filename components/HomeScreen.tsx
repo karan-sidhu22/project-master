@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, TextInput, Alert } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { supabase } from '../lib/supabaseClient';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -20,6 +21,7 @@ export default function HomeScreen() {
   });
   const [showAddForm, setShowAddForm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState('all');
 
   useEffect(() => {
     fetchExpenses();
@@ -66,7 +68,7 @@ export default function HomeScreen() {
         }]);
 
       if (error) throw error;
-      
+
       await fetchExpenses();
       setNewExpense({ category: '', amount: '', description: '' });
       setShowAddForm(false);
@@ -75,18 +77,52 @@ export default function HomeScreen() {
     }
   };
 
+  const filterExpenses = () => {
+    const now = new Date();
+
+    switch (filter) {
+      case '1day':
+        return expenses.filter(e => {
+          const expenseDate = new Date(e.date);
+          const diff = (now.getTime() - expenseDate.getTime()) / (1000 * 60 * 60 * 24);
+          return diff < 1;
+        });
+      case '1week':
+        return expenses.filter(e => {
+          const expenseDate = new Date(e.date);
+          const diff = (now.getTime() - expenseDate.getTime()) / (1000 * 60 * 60 * 24);
+          return diff < 7;
+        });
+      default:
+        return expenses;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>My Expenses</Text>
-      
+
+      <Text style={styles.filterLabel}>Filter by:</Text>
+      <View style={styles.pickerContainer}>
+        <Picker
+          selectedValue={filter}
+          onValueChange={(itemValue) => setFilter(itemValue)}
+          style={styles.picker}
+        >
+          <Picker.Item label="All" value="all" />
+          <Picker.Item label="Last 1 Day" value="1day" />
+          <Picker.Item label="Last 7 Days" value="1week" />
+        </Picker>
+      </View>
+
       {loading ? (
         <Text>Loading...</Text>
       ) : (
         <ScrollView style={styles.listContainer}>
-          {expenses.length === 0 ? (
+          {filterExpenses().length === 0 ? (
             <Text style={styles.emptyText}>No expenses recorded yet</Text>
           ) : (
-            expenses.map((expense) => (
+            filterExpenses().map((expense) => (
               <View key={expense.id} style={styles.expenseItem}>
                 <View style={styles.expenseInfo}>
                   <Text style={styles.expenseCategory}>{expense.category}</Text>
@@ -111,7 +147,7 @@ export default function HomeScreen() {
             placeholder="Category (e.g., Food)"
             placeholderTextColor="#999"
             value={newExpense.category}
-            onChangeText={(text) => setNewExpense({...newExpense, category: text})}
+            onChangeText={(text) => setNewExpense({ ...newExpense, category: text })}
           />
           <TextInput
             style={styles.input}
@@ -119,14 +155,14 @@ export default function HomeScreen() {
             placeholderTextColor="#999"
             keyboardType="numeric"
             value={newExpense.amount}
-            onChangeText={(text) => setNewExpense({...newExpense, amount: text})}
+            onChangeText={(text) => setNewExpense({ ...newExpense, amount: text })}
           />
           <TextInput
             style={styles.input}
             placeholder="Description (Optional)"
             placeholderTextColor="#999"
             value={newExpense.description}
-            onChangeText={(text) => setNewExpense({...newExpense, description: text})}
+            onChangeText={(text) => setNewExpense({ ...newExpense, description: text })}
           />
           <TouchableOpacity style={styles.saveButton} onPress={handleAddExpense}>
             <Text style={styles.buttonText}>Save Expense</Text>
@@ -134,14 +170,14 @@ export default function HomeScreen() {
         </View>
       )}
 
-      <TouchableOpacity 
-        style={styles.addButton} 
+      <TouchableOpacity
+        style={styles.addButton}
         onPress={() => setShowAddForm(!showAddForm)}
       >
-        <Ionicons 
-          name={showAddForm ? "close" : "add"} 
-          size={24} 
-          color="white" 
+        <Ionicons
+          name={showAddForm ? "close" : "add"}
+          size={24}
+          color="white"
         />
         <Text style={styles.buttonText}>
           {showAddForm ? 'Cancel' : 'Add Expense'}
@@ -163,6 +199,25 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 15,
     color: '#2c3e50',
+  },
+  filterLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 5,
+    color: '#2c3e50',
+  },
+  pickerContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    marginBottom: 15,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderColor: '#ddd',
+    borderWidth: 1,
+  },
+  picker: {
+    height: 50,
+    color: '#333',
   },
   listContainer: {
     flex: 1,
