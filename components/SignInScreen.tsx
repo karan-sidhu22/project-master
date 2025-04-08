@@ -1,28 +1,34 @@
 import React, { useState } from 'react';
 import { View, TextInput, Alert, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { supabase } from '../lib/supabaseClient'; // Adjust the import path as needed
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 // Define the type for the navigation stack parameters
 type AuthStackParamList = {
-    SignIn: undefined;
+    SignIn: { email?: string; password?: string; firstname?: string; lastname?: string } | undefined;
     SignUp: undefined;
     MainApp: undefined; // Add this line to define the MainApp screen
 };
 
 // Define the navigation prop type for the SignInScreen
 type SignInScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'SignIn'>;
+type SignInScreenRouteProp = RouteProp<AuthStackParamList, 'SignIn'>;
 
-export default function SignInScreen() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    //const [loading, setLoading] = useState(false); // Loading state for the Sign In button
+export default function SignInScreen({ route }: { route: SignInScreenRouteProp }) {
     const navigation = useNavigation<SignInScreenNavigationProp>();
+    const [email, setEmail] = useState(route.params?.email || '');
+    const [password, setPassword] = useState(route.params?.password || '');
+    const [firstname, setFirstname] = useState(route.params?.firstname || '');
+    const [lastname, setLastname] = useState(route.params?.lastname || '');
 
     const handleSignIn = async () => {
-        //setLoading(true); // Start loading
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
+        if (error) {
+            Alert.alert('Error', error.message);
+            return;
+        }
         // Validate inputs
         if (!email || !password) {
             Alert.alert('Error', 'Please fill in all fields');
@@ -31,15 +37,6 @@ export default function SignInScreen() {
         }
         
 
-        // Sign in with Supabase
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
-
-        // if (error) {
-        //     Alert.alert('Error', error.message); // Show error message
-        // } 
         const user = data.user;
         if (!user) {
             Alert.alert('Error', 'Sign-in failed.');
@@ -47,7 +44,7 @@ export default function SignInScreen() {
         }
         const { data: existingUser, error: fetchError } = await supabase
             .from('users')
-            .select('*')
+            .select('email')
             .eq('email', email.toLocaleLowerCase()) 
             .single();
 
@@ -64,8 +61,8 @@ export default function SignInScreen() {
                     {
                         uuid: user.id, // Supabase Auth User ID
                         email: user.email,
-                        firstname: "", // Placeholder (Update later)
-                        lastname: "",
+                        firstname: firstname,
+                        lastname: lastname,
                         password: password, // Storing plain text password (not recommended)
                     },
                 ]);
@@ -79,10 +76,8 @@ export default function SignInScreen() {
         Alert.alert('Success', `Welcome, ${user.email}!`);
         setEmail('');
         setPassword('');
-        //setLoading(false);
         navigation.navigate('MainApp');;
 
-         // Stop loading
     };
 
     return (

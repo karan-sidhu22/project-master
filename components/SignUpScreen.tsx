@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons'; // Import an icon library
 
 // Define the type for the navigation stack parameters
 type AuthStackParamList = {
-    SignIn: undefined;
+    SignIn: { email: string; password: string; firstname: string; lastname: string } | undefined;
     SignUp: undefined;
     Home: undefined;
     Account: undefined;
@@ -17,41 +17,46 @@ type AuthStackParamList = {
 type SignUpScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'SignUp'>;
 
 export default function SignUpScreen() {
-    const [mobileNumber, setMobileNumber] = useState('');
-    const [name, setName] = useState('');
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const navigation = useNavigation<SignUpScreenNavigationProp>();
 
     const handleSignUp = async () => {
+        if (!firstname || !lastname || !email || !password || !confirmPassword) {
+            Alert.alert('Error', 'All fields are required');
+            return;
+        }
         // Validate password match
         if (password !== confirmPassword) {
             Alert.alert('Error', 'Passwords do not match');
             return;
         }
 
+        const lowerCaseEmail = email.toLowerCase();
+
         // Sign up with Supabase Auth
         const { data, error } = await supabase.auth.signUp({
-            email,
+            email: lowerCaseEmail,
             password,
         });
 
         if (error) {
             Alert.alert('Error', error.message);
-        } else {
-            // Insert user into the users table
-            const { error: insertError } = await supabase
-                .from('users')
-                .insert([{ email, password_hash: password, mobile_number: mobileNumber, name }]);
-
-            if (insertError) {
-                Alert.alert('Error', insertError.message);
-            } else {
-                Alert.alert('Success', 'Account created successfully! Please check your email to verify your account.');
-                navigation.navigate('SignIn'); // Navigate back to the Sign In page
-            }
+            return;
         }
+
+        Alert.alert('Success', 'Account created! Please sign in.');
+        
+        // Navigate to SignIn and pass user details
+        navigation.navigate('SignIn', { 
+            email: lowerCaseEmail, 
+            password, 
+            firstname, 
+            lastname 
+        });
     };
 
     return (
@@ -63,18 +68,18 @@ export default function SignUpScreen() {
 
             <Text style={styles.title}>Sign up</Text>
             <Text style={styles.subtitle}>Already Have an Account? <Text style={styles.linkText} onPress={() => navigation.navigate('SignIn')}>Sign In</Text></Text>
+            
             <TextInput
-                placeholder="Mobile Number"
-                value={mobileNumber}
-                onChangeText={setMobileNumber}
+                placeholder="First Name"
+                value={firstname}
+                onChangeText={setFirstname}
                 style={styles.input}
                 placeholderTextColor="#999"
-                keyboardType="phone-pad"
             />
             <TextInput
-                placeholder="First and Last Name"
-                value={name}
-                onChangeText={setName}
+                placeholder="Last Name"
+                value={lastname}
+                onChangeText={setLastname}
                 style={styles.input}
                 placeholderTextColor="#999"
             />
