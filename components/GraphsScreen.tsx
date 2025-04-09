@@ -112,42 +112,40 @@ export default function GraphsScreen() {
       </View>
 
       {/* Assets vs Liabilities Pie Chart */}
-      <View style={styles.card}>
-        <Text style={styles.sectionTitle}>Assets vs Liabilities</Text>
-        <View style={styles.chartContainer}>
-          <PieChart
-            data={[
-              { 
-                name: `Income ($${assets.toFixed(0)})`, 
-                value: Math.max(assets, 0.1),
-                color: '#4CAF50',
-                legendFontColor: '#7F7F7F',
-                legendFontSize: 12 
-              },
-              { 
-                name: `Expenses ($${liabilities.toFixed(0)})`, 
-                value: Math.max(liabilities, 0.1),
-                color: '#F44336',
-                legendFontColor: '#7F7F7F',
-                legendFontSize: 12 
-              }
-            ]}
-            width={screenWidth}
-            height={220}
-            chartConfig={{
-              backgroundColor: '#ffffff',
-              decimalPlaces: 0,
-              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            }}
-            accessor= "value"
-            backgroundColor="transparent"
-            paddingLeft="15"
-            absolute
-            hasLegend={true}
-            avoidFalseZero
-          />
-        </View>
-      </View>
+<View style={styles.card}>
+  <Text style={styles.sectionTitle}>Assets vs Liabilities</Text>
+  <View style={styles.chartWrapper}>
+    <PieChart
+      data={[
+        { 
+          name: `Income`, 
+          value: Math.max(assets, 0.1),
+          color: '#4CAF50',
+          legendFontColor: '#7F7F7F',
+          legendFontSize: 12 
+        },
+        { 
+          name: `Expenses`, 
+          value: Math.max(liabilities, 0.1),
+          color: '#F44336',
+          legendFontColor: '#7F7F7F',
+          legendFontSize: 12 
+        }
+      ]}
+      width={screenWidth} // Dynamically calculated width
+      height={220}
+      chartConfig={{
+        backgroundColor: '#ffffff',
+        decimalPlaces: 0,
+        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+      }}
+      accessor="value"
+      backgroundColor="transparent"
+      paddingLeft="15"
+      absolute
+    />
+  </View>
+</View>
 
       {/* Monthly Cash Flow */}
       <View style={styles.card}>
@@ -226,8 +224,9 @@ export default function GraphsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#f8f9fa',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: 'lightblue',
   },
   header: {
     fontSize: 22,
@@ -253,6 +252,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 12,
     color: '#2c3e50',
+    textAlign: 'center', // Center-align section titles
+  },
+  chartWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 8,
+    paddingHorizontal: 10, // Added padding to prevent chart and text from touching edges
   },
   row: {
     flexDirection: 'row',
@@ -263,7 +269,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#eee',
     paddingTop: 8,
-    marginTop: 4
+    marginTop: 4,
   },
   label: {
     fontSize: 16,
@@ -284,6 +290,7 @@ const styles = StyleSheet.create({
   chartContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 8
-  }
+    marginTop: 8,
+    paddingHorizontal: 10, // Added padding to prevent chart from touching edges
+  },
 });

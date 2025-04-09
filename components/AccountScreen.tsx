@@ -194,36 +194,58 @@ export default function AccountScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'lightblue', 
+    paddingHorizontal: 20, 
   },
   profileHeader: {
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#fff',
-    marginBottom: 10,
+    backgroundColor: '#ffffff', 
+    borderRadius: 10, 
+    
+    marginBottom: 20,
     marginTop: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2, 
+    
   },
   userName: {
-    fontSize: 22,
+    fontSize: 24, 
+    
     fontWeight: 'bold',
     marginTop: 10,
+    color: '#2c3e50', 
+    
   },
   userEmail: {
     fontSize: 16,
-    color: '#666',
+    color: '#555',
     marginTop: 5,
   },
   section: {
-    backgroundColor: '#fff',
-    marginBottom: 10,
-    paddingHorizontal: 15,
+    backgroundColor: '#ffffff', 
+    
+    marginBottom: 15,
+    padding: 15,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2, 
+    
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    paddingVertical: 15,
+    paddingBottom: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
+    color: '#2c3e50', 
+    
   },
   detailItem: {
     flexDirection: 'row',
@@ -236,6 +258,8 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     fontSize: 16,
     flex: 1,
+    color: '#555', 
+    
   },
   menuItem: {
     flexDirection: 'row',
@@ -247,13 +271,22 @@ const styles = StyleSheet.create({
   },
   menuText: {
     fontSize: 16,
+    color: '#2c3e50', 
+    
   },
   logoutButton: {
-    backgroundColor: '#ff3b30',
+    backgroundColor: '#ff3b30', 
+    
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
-    margin: 20,
+    marginTop: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2, 
+    
   },
   logoutButtonText: {
     color: '#fff',
@@ -261,17 +294,27 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   input: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#f9f9f9', 
+    
     padding: 12,
     marginVertical: 8,
     borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ddd', 
+    
   },
   saveButton: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#007bff', 
+    
     padding: 12,
     borderRadius: 8,
     alignItems: 'center',
     marginTop: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2, 
   },
   saveButtonText: {
     color: '#fff',
