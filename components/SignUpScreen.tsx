@@ -122,22 +122,18 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         padding: 20,
-        backgroundColor: '#fff',
-    },
-    backButton: {
-        position: 'absolute',
-        top: 40,
-        left: 20,
+        backgroundColor: 'lightblue', 
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 10,
         textAlign: 'center',
+        color: '#333',
     },
     subtitle: {
         marginBottom: 20,
-        color: '#666',
+        color: '#555', 
         textAlign: 'center',
     },
     input: {
@@ -148,10 +144,11 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         paddingHorizontal: 10,
         marginBottom: 10,
+        backgroundColor: '#fff', 
     },
     button: {
         width: '100%',
-        backgroundColor: '#007bff',
+        backgroundColor: '#007bff', 
         padding: 10,
         borderRadius: 5,
         alignItems: 'center',

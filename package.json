@@ -13,7 +13,7 @@
     "@react-native-picker/picker": "^2.11.0",
     "@react-navigation/bottom-tabs": "^7.3.3",
     "@react-navigation/native": "^7.0.19",
-    "@react-navigation/stack": "^7.2.1",
+    "@react-navigation/stack": "^7.2.10",
     "@supabase/supabase-js": "^2.49.1",
     "dotenv": "^16.4.7",
     "expo": "~52.0.42",
